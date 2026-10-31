@@ -1,6 +1,6 @@
 import {FIDUCIAL,PRESETS,curvature,point,history,age,timeAt,HUBBLE_GYR,inflationPoint,crossings} from './physics.mjs';
 const $=id=>document.getElementById(id);
-const COLORS={teal:'#258278',purple:'#8d76b8',gold:'#d9a34f',gray:'#9aaba0',ink:'#173c3c'};
+const COLORS={teal:'#8f5ab5',purple:'#c76998',gold:'#c89751',gray:'#baa6c5',ink:'#483356'};
 let p={...FIDUCIAL}, ip={epsilon:.02,duration:60,logk:25,postw:1/3,post:45};
 let selectedA=1, selectedN=0, active='flrw', hdata, baseline=history(FIDUCIAL), baselineTime=HUBBLE_GYR/FIDUCIAL.h;
 let playing=null, lastFrame=0, animationId=null, currentAge=null;
@@ -99,7 +99,7 @@ function renderInflation(){
  $('crossing-copy').textContent=cross?'At k = aH, the reduced comoving scale 1/k equals the comoving Hubble radius 1/(aH).':inside?'k > aH: the reduced comoving mode scale 1/k is smaller than the comoving Hubble radius.':'k < aH: the reduced comoving mode scale 1/k is larger than the comoving Hubble radius.';
  const ns=Array.from({length:700},(_,i)=>end*i/699);ns.push(ip.duration);ns.sort((a,b)=>a-b);const vals=ns.map(n=>inflationPoint(n,ip));
  const markers=[...(c.exit!==null?[{x:c.exit,label:'exit',color:COLORS.purple}]:[]),...(c.entry!==null?[{x:c.entry,label:'re-entry',color:COLORS.purple}]:[])];
- plot('chart-inflation',{large:true,series:[{points:vals.map(v=>[v.N,v.lnR]),color:COLORS.teal,width:2.5},{points:[[0,-ip.logk],[end,-ip.logk]],color:COLORS.purple,dash:true,width:2}],xlabel:'E-folds N = ln(a / aᵢ)',ylabel:'ln(comoving scale × aᵢHᵢ)',xdom:[0,end],cursor:{x:selectedN,ys:[q.lnR]},verticals:markers,bands:[{from:0,to:ip.duration,color:'#f1f5ed',label:'INFLATION'},{from:ip.duration,to:end,color:'#f5f0fa',label:ip.postw>0?'RADIATION ERA':'MATTER ERA'}],reference:[{x:ip.duration}],onSelect:selectN,description:'Log comoving Hubble radius falls during inflation then grows, crossing a fixed mode scale at the marked exit and re-entry'});
+ plot('chart-inflation',{large:true,series:[{points:vals.map(v=>[v.N,v.lnR]),color:COLORS.teal,width:2.5},{points:[[0,-ip.logk],[end,-ip.logk]],color:COLORS.purple,dash:true,width:2}],xlabel:'E-folds N = ln(a / aᵢ)',ylabel:'ln(comoving scale × aᵢHᵢ)',xdom:[0,end],cursor:{x:selectedN,ys:[q.lnR]},verticals:markers,bands:[{from:0,to:ip.duration,color:'#f3eaf9',label:'INFLATION'},{from:ip.duration,to:end,color:'#fbedf4',label:ip.postw>0?'RADIATION ERA':'MATTER ERA'}],reference:[{x:ip.duration}],onSelect:selectN,description:'Log comoving Hubble radius falls during inflation then grows, crossing a fixed mode scale at the marked exit and re-entry'});
  plot('chart-inflation-h',{series:[{points:vals.map(v=>[v.N,v.lnH]),color:COLORS.purple},{points:vals.map(v=>[v.N,v.lnAH]),color:COLORS.teal}],xlabel:'E-folds N',ylabel:'Natural logarithm of ratio',xdom:[0,end],cursor:{x:selectedN,ys:[q.lnH,q.lnAH]},reference:[{x:ip.duration},{y:0}],onSelect:selectN,description:'Natural logarithms of H over initial H and aH over initial aH versus e-folds'});
 }
 function changeView(view){stop();active=view;for(const v of ['flrw','inflation']){$(`${v}-controls`).hidden=v!==view;$(`${v}-view`).hidden=v!==view;$(`tab-${v}`).classList.toggle('active',v===view);$(`tab-${v}`).setAttribute('aria-selected',String(v===view));$(`tab-${v}`).tabIndex=v===view?0:-1;}if(view==='inflation')renderInflation();else renderFLRW();}
