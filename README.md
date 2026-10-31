@@ -10,7 +10,7 @@ Explore how cosmic ingredients shape expansion, then follow a mode through infla
 
 - Adjustable present-day matter, radiation and dark-energy density parameters; curvature follows the closure relation.
 - Hubble constant H₀ and constant dark-energy equation of state w.
-- Linked scale factor, Hubble rate, comoving Hubble radius and component contribution plots.
+- Linked scale factor, Hubble rate, comoving Hubble radius, component contributions and evolving density parameters Ωᵢ(a).
 - Radiation, matter, de Sitter, Milne and illustrative flat ΛCDM presets.
 - Epoch inspection, animation, fiducial overlays and CSV export.
 - Constant-ε inflation with adjustable duration and comoving wavenumber, followed by radiation or matter domination.
@@ -30,7 +30,7 @@ Then visit `http://localhost:8000`. Run the numerical validation with:
 node tests.mjs
 ```
 
-The suite contains 104 checks against analytic radiation, matter, Milne, de Sitter and flat matter–Λ results, as well as integration consistency, branch handling, Hubble crossing and transition continuity.
+The suite contains 119 checks against analytic radiation, matter, Milne, de Sitter and flat matter–Λ results, as well as integration consistency, branch handling, Hubble crossing and transition continuity.
 
 ## Physics and scope
 

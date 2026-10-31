@@ -80,6 +80,13 @@ function renderFLRW(){
  plot('chart-h',{series:series(v=>[v.a,v.E]),logx:true,logy:true,xdom:adom,xlabel:'Scale factor a',ylabel:'H(a) / H₀',cursor:{x:selectedA,ys:[q.E]},reference:[{x:1},{y:1}],onSelect:selectA,description:'Hubble rate H over H0 versus scale factor, both logarithmic'});
  plot('chart-r',{series:series(v=>[v.a,v.r]),logx:true,logy:true,xdom:adom,xlabel:'Scale factor a',ylabel:'H₀ / (aH)',cursor:{x:selectedA,ys:[q.r]},reference:[{x:1},{y:1}],onSelect:selectA,description:'Dimensionless comoving Hubble radius versus scale factor, both logarithmic'});
  plot('chart-density',{series:[COLORS.gold,COLORS.teal,COLORS.purple,COLORS.gray].map((color,i)=>({color,dash:i===3,points:data.map(v=>[v.a,Math.abs(v.terms[i])])})),logx:true,logy:true,xdom:adom,xlabel:'Scale factor a',ylabel:'Contribution to E²(a)',cursor:{x:selectedA,ys:[]},reference:[{x:1},{y:1}],onSelect:selectA,description:'Radiation, matter, dark energy and absolute curvature contributions to the squared Hubble rate'});
+
+ const omegaColors=[COLORS.gold,COLORS.teal,COLORS.purple,COLORS.ink];
+ const omegaSeries=omegaColors.map((color,i)=>({color,dash:i===3,points:data.map(v=>[v.a,v.f[i]])}));
+ if(compare)omegaColors.forEach((color,i)=>omegaSeries.push({color,dash:true,width:1,points:baseline.points.map(v=>[v.a,v.f[i]])}));
+ const omegaYs=omegaSeries.flatMap(s=>s.points.map(v=>v[1])),omin=Math.min(0,...omegaYs),omax=Math.max(1,...omegaYs),opad=(omax-omin)*.05;
+ plot('chart-omega',{large:true,series:omegaSeries,logx:true,xdom:adom,ydom:[omin-opad,omax+opad],xlabel:'Scale factor a',ylabel:'Ωᵢ(a) · dimensionless',cursor:{x:selectedA,ys:q.f},reference:[{x:1},{y:0},{y:1}],onSelect:selectA,description:'Dimensionless radiation, matter, dark energy and signed curvature density parameters relative to the critical density of each epoch'});
+ $('omega-values').innerHTML=q.f.map((v,i)=>`<div><span>${['Ωᵣ(a)','Ωₘ(a)','Ωde(a)','Ωₖ(a)'][i]}</span><b style="color:${omegaColors[i]}">${fmt(v,5)}</b></div>`).join('');
  const pure=$('preset').value;$('scale-insight').textContent=({radiation:'Radiation: a ∝ t½ and (aH)⁻¹ ∝ a.',matter:'Matter: a ∝ t⅔ and (aH)⁻¹ ∝ a½.',desitter:'de Sitter: a ∝ exp(Ht); H is constant.',milne:'Milne: a ∝ t; the comoving Hubble radius is constant.'})[pure]||'Matter slows expansion; sufficiently negative pressure accelerates it.';
 }
 const isyncs=[];

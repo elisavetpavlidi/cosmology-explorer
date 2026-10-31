@@ -33,4 +33,13 @@ const mat={...ip,postw:0,post:100};near(crossings(mat).entry,127.6,1e-10,'Matter
 near(inflationPoint(10,{...ip,epsilon:0}).lnH,0,1e-12,'de Sitter inflation H constant');
 near(inflationPoint(10,ip).lnR,-9.8,1e-10,'Inflation radius shrink');
 near(curvature(FIDUCIAL),0,1e-12,'Fiducial flat closure');
+for(const a of [1e-6,.001,.1,1,3]){
+ const v=point(a,FIDUCIAL);near(v.f.reduce((x,y)=>x+y,0),1,1e-12,'Omega closure at each epoch');
+ near(v.f[0]/v.f[1],FIDUCIAL.r/(FIDUCIAL.m*a),1e-9,'Radiation to matter Omega ratio');
+}
+near(point(1,FIDUCIAL).f[1],FIDUCIAL.m,1e-12,'Present matter Omega');
+near(point(1,FIDUCIAL).f[2],FIDUCIAL.de,1e-12,'Present dark energy Omega');
+ok(point(1e-6,FIDUCIAL).f[0]>.99,'Early radiation domination');
+ok(point(3,FIDUCIAL).f[2]>.98,'Future dark energy domination');
+ok(point(1,{...FIDUCIAL,m:.4,de:.8}).f[3]<0,'Signed negative curvature retained');
 console.log(`PASS: ${checks} cosmology checks (analytic limits, integration, branch handling, crossing and continuity).`);
